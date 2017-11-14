@@ -15,7 +15,7 @@ import cucumber.api.java.zh_cn.假如;
 
 public class CucumberSteps {
 
-    private Frequency f;
+    List<Frequency> list = new ArrayList<Frequency>();
 
     @cucumber.api.java.Before
     public void setup() {
@@ -27,39 +27,18 @@ public class CucumberSteps {
         System.out.println("after");
     }
 
-    @假如("你好：(.*)")
-    public void hello(String name) {
-        System.out.println("你好：" + name + "，欢迎光临。");
-    }
-
-    @假如("读文件(.*?)")
-    public void read(String name) {
-        System.out.println("read file" + name);
-    }
-
-    @假如("^入参 (\\w+)$")
+    @假如("^输入 (\\w+)$")
     public void 入参(String input) throws Throwable {
-        f = new Frequency(input);
+        list.add(new Frequency(input));
     }
 
-    @假如("^格式化结果是 (\\w+)$")
+    @假如("^规范化结果是 (\\w+)$")
     public void 格式化结果是(String input) throws Throwable {
-        if (!f.toString().equals(input)) {
+        if (!list.get(0).toString().equals(input)) {
             throw new RuntimeException(
-                    "断言失败,应该是:" + input + "，结果却是" + f.toString());
+                    "断言失败,应该是:" + input + "，结果却是" + list.get(0).toString());
         }
     }
-
-    @假如("^班期(.*?)和班期(.*?)的交集是(.*?)$")
-    public void 格式化结果是(String left, String right, List<Integer> split)
-            throws Throwable {
-        list.add(new Frequency(left));
-        list.add(new Frequency(right));
-        System.out.println(split);
-        this.交集是(split);
-    }
-
-    List<Frequency> list = new ArrayList<Frequency>();
 
     @假如("^给出班期列表$")
     public void 班期列表(DataTable table) throws Throwable {
